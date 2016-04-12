@@ -1,6 +1,6 @@
-AWS_REGION ?= eu-west-1
+AWS_REGION ?= us-east-1
 
-DCOS_CLUSTER_NAME        ?= dcos
+DCOS_CLUSTER_NAME        ?= nrgi-dcos
 DCOS_ADMIN_KEY           ?= ~/.ssh/id_rsa.pub
 DCOS_ADMIN_LOCATION      ?= 0.0.0.0/0
 DCOS_WORKER_NODES        ?= 5
