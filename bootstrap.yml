@@ -2,13 +2,13 @@
   connection: local
   gather_facts: False
   tasks:
-    - name: Create EC2 key pair
-      ec2_key:
-        name: dcos_admin
-        state: present
-        region: "{{ aws_region }}"
-        key_material: "{{ item }}"
-      with_file: dcos_admin_key
+    # - name: Create EC2 key pair
+    #   ec2_key:
+    #     name: dcos_admin
+    #     state: present
+    #     region: "{{ aws_region }}"
+    #     key_material: "{{ item }}"
+    #   with_file: dcos_admin_key
 
     - name: Create Mesosphere DCOS cluster
       cloudformation:
@@ -19,7 +19,7 @@
         template_parameters:
           AcceptEULA: "Yes"
           AdminLocation: "{{ dcos_admin_location }}"
-          KeyName: dcos_admin
+          KeyName: dcos-admin
           SlaveInstanceCount: "{{ dcos_worker_nodes }}"
           PublicSlaveInstanceCount: "{{ dcos_public_worker_nodes }}"
       register: dcos_stack
