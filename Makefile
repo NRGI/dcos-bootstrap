@@ -1,11 +1,11 @@
 AWS_REGION ?= us-east-1
 
 DCOS_CLUSTER_NAME        ?= nrgi-dcos
-DCOS_ADMIN_KEY           ?= ~/.ssh/id_rsa.pub
+DCOS_ADMIN_KEY           ?= ~/.ssh/dcos-admin.pem
 DCOS_ADMIN_LOCATION      ?= 0.0.0.0/0
-DCOS_WORKER_NODES        ?= 5
+DCOS_WORKER_NODES        ?= 4
 DCOS_PUBLIC_WORKER_NODES ?= 1
-DCOS_CHANNEL             ?= stable
+DCOS_CHANNEL             ?= nrgi
 DCOS_MASTER_SETUP        ?= single-master
 
 bootstrap: venv
