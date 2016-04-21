@@ -49,10 +49,9 @@ TEMPLATES_ROOT = https://s3.amazonaws.com/downloads.mesosphere.io/dcos
 sync:
 	curl -f -s $(TEMPLATES_ROOT)/stable/cloudformation/single-master.cloudformation.json | jq . >cloudformation/stable/single-master.json
 	curl -f -s $(TEMPLATES_ROOT)/stable/cloudformation/multi-master.cloudformation.json | jq . >cloudformation/stable/multi-master.json
-	# curl -f -s $(TEMPLATES_ROOT)/EarlyAccess/cloudformation/single-master.cloudformation.json | jq . >cloudformation/earlyaccess/multi-master.json
-	curl -f -s https://s3-us-west-2.amazonaws.com/downloads.dcos.io/dcos/EarlyAccess/commit/14509fe1e7899f439527fb39867194c7a425c771/cloudformation/single-master.cloudformation.json | jq . >cloudformation/earlyaccess/single-master.json
+	curl -f -s $(TEMPLATES_ROOT)/EarlyAccess/cloudformation/single-master.cloudformation.json | jq . >cloudformation/earlyaccess/multi-master.json
+	# curl -f -s https://s3-us-west-2.amazonaws.com/downloads.dcos.io/dcos/EarlyAccess/commit/14509fe1e7899f439527fb39867194c7a425c771/cloudformation/single-master.cloudformation.json | jq . >cloudformation/earlyaccess/single-master.json
 	curl -f -s $(TEMPLATES_ROOT)/EarlyAccess/cloudformation/multi-master.cloudformation.json | jq . >cloudformation/earlyaccess/multi-master.json
-	# -git commit -m 'Sync CloudFormation templates with upstream' cloudformation/
 	aws s3 sync ./cloudformation/ s3://nrgi-cloudformation/dcos
 
 .PHONY: venv

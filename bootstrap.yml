@@ -14,9 +14,9 @@
         stack_name: "{{ dcos_cluster_name }}"
         state: present
         region: "{{ aws_region }}"
-        template_url: "https://s3.amazonaws.com/cf-templates-f3tq4hz2ufgs-us-east-1/dcos/{{ dcos_channel }}/{{ dcos_master_setup }}.json"
+        template_url: "https://s3.amazonaws.com/nrgi-cloudformation/dcos/{{ dcos_channel }}/{{ dcos_master_setup }}.json"
         template_parameters:
-          AcceptEULA: "Yes"
+          # AcceptEULA: "Yes"
           AdminLocation: "{{ dcos_admin_location }}"
           KeyName: dcos-admin
           SlaveInstanceCount: "{{ dcos_worker_nodes }}"
