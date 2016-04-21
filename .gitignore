@@ -1,4 +1,5 @@
 *.pyc
+./dcos-admin.pem
 /tmp/
 /venv/
 /conf/
