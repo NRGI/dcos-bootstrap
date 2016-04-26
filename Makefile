@@ -26,13 +26,14 @@ destroy: venv
 		-e dcos_channel="$(DCOS_CHANNEL)" \
 		-e dcos_master_setup="$(DCOS_MASTER_SETUP)"
 
+dependancies: venv
+	venv/bin/ansible-playbook -v dependancies.yml
+	# kubernetes-env
+
 kubernetes: bootstrap kubernetes-install kubernetes-env
 
-kubernetes-install: venv
-	venv/bin/ansible-playbook -v kubernetes.yml
-
-kubernetes-env:
-	@echo KUBERNETES_MASTER=$$(./dcos config show core.dcos_url)/service/kubernetes/api
+# kubernetes-env:
+# 	@echo KUBERNETES_MASTER=$$(./dcos config show core.dcos_url)/service/kubernetes/api
 
 dashboard:
 	@open $$(./dcos config show core.dcos_url)

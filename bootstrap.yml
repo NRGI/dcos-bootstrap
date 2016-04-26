@@ -39,10 +39,10 @@
       changed_when: False
 
     - name: Load Jenkins
-      command: ./dcos packagge install --yes jenkins
+      command: ./dcos package install --yes jenkins
 
-    - name: Load Jenkins
-      command: ./dcos packagge install --yes chronos
+    # - name: Load Jenkins
+    #   command: ./dcos package install --yes chronos
 
-    - name: Load Jenkins
-      command: ./dcos packagge install --yes marathon-lb
+    # - name: Load Jenkins
+    #   command: ./dcos package install --yes marathon-lb
