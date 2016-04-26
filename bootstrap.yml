@@ -37,3 +37,12 @@
     - name: Validate DCOS CLI configuration
       command: ./dcos config validate
       changed_when: False
+
+    - name: Load Jenkins
+      command: ./dcos packagge install --yes jenkins
+
+    - name: Load Jenkins
+      command: ./dcos packagge install --yes chronos
+
+    - name: Load Jenkins
+      command: ./dcos packagge install --yes marathon-lb
