@@ -6,10 +6,14 @@
       command: ./dcos package list
       register: package_list
       ignore_errors: True
+    - name: Get list of installed Marathon aps
+      command: ./dcos marathon app list
+      register: app_list
+      ignore_errors: True
 
-    - name: Install chronos
-      command: ./dcos package install --yes chronos
-      when: "'/chronos' not in package_list.stdout"
+    # - name: Install chronos
+    #   command: ./dcos package install --yes chronos
+    #   when: "'/chronos' not in package_list.stdout"
 
     - name: Install jenkins
       command: ./dcos package install --yes jenkins
@@ -18,6 +22,32 @@
     - name: Install marathon-lb
       command: ./dcos package install --yes marathon-lb
       when: "'/marathon-lb' not in package_list.stdout"
+
+    # - name: Install marathon-lb-internal
+    #   command: ./dcos package install --options=./conf/marathon-lb-opt.json --yes marathon-lb
+    #   when: "'/marathon-lb-internal' not in package_list.stdout"
+
+    # - name: Install nginx-external
+    #   command: ./dcos marathon app add ./conf/nginx-external.json
+    #   when: "'/nginx-external' not in app_list.stdout"
+
+    # - name: Install nginx-internal
+    #   command: ./dcos marathon app add ./conf/nginx-internal.json
+    #   when: "'/nginx-internal' not in app_list.stdout"
+
+    # - name: Install nginx-everywhere
+    #   command: ./dcos marathon app add ./conf/nginx-everywhere.json
+    #   when: "'/nginx-everywhere' not in app_list.stdout"
+
+    - name: Install RGI
+      command: ./dcos marathon app add ./conf/rgi.json
+      when: "'/rgi' not in app_list.stdout"
+
+    # - name: Install RP
+    #   command: ./dcos marathon app add ./conf/rp-org.json
+    #   when: "'/resource-projects-org' not in app_list.stdout"
+
+
 
     # KUBERNETES
     # - name: Install etcd-mesos cluster

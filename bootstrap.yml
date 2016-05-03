@@ -16,7 +16,6 @@
         region: "{{ aws_region }}"
         template_url: "https://s3.amazonaws.com/nrgi-cloudformation/dcos/{{ dcos_channel }}/{{ dcos_master_setup }}.json"
         template_parameters:
-          # AcceptEULA: "Yes"
           AdminLocation: "{{ dcos_admin_location }}"
           KeyName: dcos-admin
           SlaveInstanceCount: "{{ dcos_worker_nodes }}"
@@ -26,6 +25,9 @@
     - set_fact:
         dcos_url: "http://{{ dcos_stack.stack_outputs.DnsAddress }}"
 
+    - set_fact:
+        dcos_public_slave: "http://{{{ dcos_stack.stack_outputs.PublicSlaveDnsAddress }}"
+
     - name: Create tmp folder for DCOS CLI
       file: path=tmp/.dcos state=directory mode=0755
 
@@ -34,15 +36,15 @@
         src: templates/dcos.toml.j2
         dest: tmp/.dcos/dcos.toml
 
+    - name: Generate URL configuration
+      template:
+        src: templates/urls.conf.tmpl
+        dest: tmp/urls.conf
+
     - name: Validate DCOS CLI configuration
       command: ./dcos config validate
       changed_when: False
 
-    - name: Load Jenkins
-      command: ./dcos package install --yes jenkins
+    # SET DNS
+    # http://docs.ansible.com/ansible/route53_module.html
 
-    # - name: Load Jenkins
-    #   command: ./dcos package install --yes chronos
-
-    # - name: Load Jenkins
-    #   command: ./dcos package install --yes marathon-lb

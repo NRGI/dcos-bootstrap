@@ -3,8 +3,8 @@ AWS_REGION ?= us-east-1
 DCOS_CLUSTER_NAME        ?= nrgi-dcos
 DCOS_ADMIN_KEY           ?= ~/.ssh/dcos-admin.pem
 DCOS_ADMIN_LOCATION      ?= 0.0.0.0/0
-DCOS_WORKER_NODES        ?= 4
-DCOS_PUBLIC_WORKER_NODES ?= 1
+DCOS_WORKER_NODES        ?= 3
+DCOS_PUBLIC_WORKER_NODES ?= 3
 DCOS_CHANNEL             ?= nrgi
 DCOS_MASTER_SETUP        ?= single-master
 
@@ -45,14 +45,14 @@ venv:
 clean:
 	$(RM) -r tmp venv
 
-TEMPLATES_ROOT = https://s3.amazonaws.com/downloads.mesosphere.io/dcos
-				 # https://s3-us-west-2.amazonaws.com/downloads.dcos.io/dcos/EarlyAccess/commit/14509fe1e7899f439527fb39867194c7a425c771/cloudformation/single-master.cloudformation.json
+TEMPLATES_ROOT_STABLE = https://s3.amazonaws.com/downloads.mesosphere.io/dcos
+TEMPLATES_ROOT_EARLY = https://s3-us-west-2.amazonaws.com/downloads.dcos.io/dcos/EarlyAccess/commit/14509fe1e7899f439527fb39867194c7a425c771/cloudformation
+
 sync:
-	curl -f -s $(TEMPLATES_ROOT)/stable/cloudformation/single-master.cloudformation.json | jq . >cloudformation/stable/single-master.json
-	curl -f -s $(TEMPLATES_ROOT)/stable/cloudformation/multi-master.cloudformation.json | jq . >cloudformation/stable/multi-master.json
-	curl -f -s $(TEMPLATES_ROOT)/EarlyAccess/cloudformation/single-master.cloudformation.json | jq . >cloudformation/earlyaccess/multi-master.json
-	# curl -f -s https://s3-us-west-2.amazonaws.com/downloads.dcos.io/dcos/EarlyAccess/commit/14509fe1e7899f439527fb39867194c7a425c771/cloudformation/single-master.cloudformation.json | jq . >cloudformation/earlyaccess/single-master.json
-	curl -f -s $(TEMPLATES_ROOT)/EarlyAccess/cloudformation/multi-master.cloudformation.json | jq . >cloudformation/earlyaccess/multi-master.json
+	curl -f -s $(TEMPLATES_ROOT_STABLE)/stable/cloudformation/single-master.cloudformation.json | jq . >cloudformation/stable/single-master.json
+	curl -f -s $(TEMPLATES_ROOT_STABLE)/stable/cloudformation/multi-master.cloudformation.json | jq . >cloudformation/stable/multi-master.json
+	curl -f -s $(TEMPLATES_ROOT_EARLY)/single-master.cloudformation.json | jq . >cloudformation/earlyaccess/multi-master.json
+	curl -f -s $(TEMPLATES_ROOT_EARLY)/multi-master.cloudformation.json | jq . >cloudformation/earlyaccess/multi-master.json
 	aws s3 sync ./cloudformation/ s3://nrgi-cloudformation/dcos
 
 .PHONY: venv
