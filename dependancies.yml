@@ -11,13 +11,13 @@
       register: app_list
       ignore_errors: True
 
-    # - name: Install chronos
-    #   command: ./dcos package install --yes chronos
-    #   when: "'/chronos' not in package_list.stdout"
+    - name: Install chronos
+      command: ./dcos package install --yes chronos
+      when: "'/chronos' not in package_list.stdout"
 
-    - name: Install jenkins
-      command: ./dcos package install --yes jenkins
-      when: "'/jenkins' not in package_list.stdout"
+    # - name: Install jenkins
+    #   command: ./dcos package install --yes jenkins
+    #   when: "'/jenkins' not in package_list.stdout"
 
     - name: Install marathon-lb
       command: ./dcos package install --yes marathon-lb
@@ -39,9 +39,13 @@
     #   command: ./dcos marathon app add ./conf/nginx-everywhere.json
     #   when: "'/nginx-everywhere' not in app_list.stdout"
 
-    - name: Install RGI
-      command: ./dcos marathon app add ./conf/rgi.json
-      when: "'/rgi' not in app_list.stdout"
+    - name: Install RGI staging
+      command: ./dcos marathon app add ./conf/rgi-staging.json
+      when: "'/rgi-staging' not in app_list.stdout"
+
+    - name: Install RGI production
+      command: ./dcos marathon app add ./conf/rgi-production.json
+      when: "'/rgi-production' not in app_list.stdout"
 
     # - name: Install RP
     #   command: ./dcos marathon app add ./conf/rp-org.json
