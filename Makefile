@@ -7,6 +7,7 @@ DCOS_WORKER_NODES        ?= 3
 DCOS_PUBLIC_WORKER_NODES ?= 1
 DCOS_CHANNEL             ?= nrgi
 DCOS_MASTER_SETUP        ?= single-master
+DCOS_ROUTE53_ZONE        ?= Z2PYZBK36FDXXD
 
 bootstrap: venv
 	venv/bin/ansible-playbook -v bootstrap.yml \
@@ -17,7 +18,8 @@ bootstrap: venv
 		-e dcos_worker_nodes="$(DCOS_WORKER_NODES)" \
 		-e dcos_public_worker_nodes="$(DCOS_PUBLIC_WORKER_NODES)" \
 		-e dcos_channel="$(DCOS_CHANNEL)" \
-		-e dcos_master_setup="$(DCOS_MASTER_SETUP)"
+		-e dcos_master_setup="$(DCOS_MASTER_SETUP)" \
+		-e dcos_zone="$(DCOS_ROUTE53_ZONE)"
 
 destroy: venv
 	venv/bin/ansible-playbook -v destroy.yml \
