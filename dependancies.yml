@@ -19,9 +19,9 @@
     #   command: ./dcos package install --yes jenkins
     #   when: "'/jenkins' not in package_list.stdout"
 
-    - name: Install marathon-lb
-      command: ./dcos package install --yes marathon-lb
-      when: "'/marathon-lb' not in package_list.stdout"
+    - name: Install marathon-lb-external
+      command: ./dcos package install --yes --options=./conf/marathon-lb-opt.json marathon-lb
+      when: "'/marathon-lb-external' not in package_list.stdout"
 
     # - name: Install marathon-lb-internal
     #   command: ./dcos package install --options=./conf/marathon-lb-opt.json --yes marathon-lb

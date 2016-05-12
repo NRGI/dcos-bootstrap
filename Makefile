@@ -3,7 +3,7 @@ AWS_REGION ?= us-east-1
 DCOS_CLUSTER_NAME        ?= nrgi-dcos
 DCOS_ADMIN_KEY           ?= ~/.ssh/dcos-admin.pem
 DCOS_ADMIN_LOCATION      ?= 0.0.0.0/0
-DCOS_WORKER_NODES        ?= 3
+DCOS_WORKER_NODES        ?= 2
 DCOS_PUBLIC_WORKER_NODES ?= 1
 DCOS_CHANNEL             ?= nrgi
 DCOS_MASTER_SETUP        ?= single-master
@@ -27,6 +27,7 @@ destroy: venv
 		-e aws_region="$(AWS_REGION)" \
 		-e dcos_channel="$(DCOS_CHANNEL)" \
 		-e dcos_master_setup="$(DCOS_MASTER_SETUP)"
+	$(RM) -r tmp venv
 
 dependancies: venv
 	venv/bin/ansible-playbook -v dependancies.yml
