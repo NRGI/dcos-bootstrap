@@ -41,44 +41,15 @@
         src: templates/urls.conf.tmpl
         dest: tmp/urls.conf
 
+    - name: Generate DNS configuration
+      template:
+        src: templates/dns_change.json.tmpl
+        dest: tmp/dns_change.json
+
     - name: Validate DCOS CLI configuration
       command: ./dcos config validate
       changed_when: False
 
     - name: Update elastic beanstalk
-      command: echo {{ dcos_url_update }}
-      # command: aws route53 change-resource-record-sets --hosted-zone-id Z35SXDOTRQ7X7K --change-batch file:''
-# Alias Syntax:
-
-#           {
-#             "Comment": "optional comment about the changes in this change batch request",
-#             "Changes": [
-#               {
-#                 "Action": "CREATE"|"DELETE"|"UPSERT",
-#                 "ResourceRecordSet": {
-#                   "Name": "DNS domain name",
-#                   "Type": "A",
-#                   "AliasTarget": {
-#                     "HostedZoneId": "hosted zone ID for your CloudFront distribution, Amazon S3 bucket, Elastic Load Balancing load balancer, or Amazon Route 53 hosted zone",
-#                     "DNSName": "DNS domain name for your CloudFront distribution, Amazon S3 bucket, Elastic Load Balancing load balancer, or another resource record set in this hosted zone",
-#                     "EvaluateTargetHealth": true|false
-#                   },
-#                   "HealthCheckId": "optional ID of an Amazon Route 53 health check"
-#                 }
-#               },
-#               {...}
-#             ]
-#           }
-      # dualstack.nrgi-dcos-ElasticL-SMGG7VAS360N-1660210306.us-east-1.elb.amazonaws.com
-
-      # curl --header "Authorization:curl --header token=$(dcos config show core.dcos_acs_token)" -L -H 'Content-Type: application/json' -X POST -d@nos.json "http://mesosclus-elasticl-abcdf1304kl-1913011502.us-east-1.elb.amazonaws.com/#/services/ui/chronos/scheduler/iso8601"`
-      # curl -sSL -H "Authorization: token=$(dcos config show core.dcos_acs_token)" $(dcos config show core.dcos_url)/mesos/slaves | python -m json.tool`
-      # dcos package install chronos
-      # curl --header "Authorization:curl --header token=$(dcos config show core.dcos_acs_token)"  -L -H 'Content-Type: application/json' -X POST -d@nos.json "http://m1.dcos/service/chronos/scheduler/iso8601
-      # "http://<MASTER_HERE>/service/chronos/scheduler/iso8601"`
-
-
-
-    # SET DNS
-    # http://docs.ansible.com/ansible/route53_module.html
+      command: aws route53 change-resource-record-sets --hosted-zone-id Z2PYZBK36FDXXD --change-batch file://./tmp/dns_change.json
 
