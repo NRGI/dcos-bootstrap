@@ -47,9 +47,9 @@
       command: ./dcos marathon app add ./conf/rgi-production.json
       when: "'/rgi-production' not in app_list.stdout"
 
-    # - name: Install RP
-    #   command: ./dcos marathon app add ./conf/rp-org.json
-    #   when: "'/resource-projects-org' not in app_list.stdout"
+    - name: Install RP
+      command: ./dcos marathon app add ./conf/rp-org.json
+      when: "'/resource-projects-org' not in app_list.stdout"
 
 
 

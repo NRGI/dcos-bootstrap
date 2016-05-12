@@ -1,0 +1,10 @@
+#!/usr/local/Dropbox/dcos-bootstrap/env/bin/python3.5
+# EASY-INSTALL-ENTRY-SCRIPT: 'humanfriendly==1.44.7','console_scripts','humanfriendly'
+__requires__ = 'humanfriendly==1.44.7'
+import sys
+from pkg_resources import load_entry_point
+
+if __name__ == '__main__':
+    sys.exit(
+        load_entry_point('humanfriendly==1.44.7', 'console_scripts', 'humanfriendly')()
+    )

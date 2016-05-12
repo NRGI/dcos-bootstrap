@@ -4,7 +4,7 @@ DCOS_CLUSTER_NAME        ?= nrgi-dcos
 DCOS_ADMIN_KEY           ?= ~/.ssh/dcos-admin.pem
 DCOS_ADMIN_LOCATION      ?= 0.0.0.0/0
 DCOS_WORKER_NODES        ?= 3
-DCOS_PUBLIC_WORKER_NODES ?= 3
+DCOS_PUBLIC_WORKER_NODES ?= 1
 DCOS_CHANNEL             ?= nrgi
 DCOS_MASTER_SETUP        ?= single-master
 
@@ -53,6 +53,6 @@ sync:
 	curl -f -s $(TEMPLATES_ROOT_STABLE)/stable/cloudformation/multi-master.cloudformation.json | jq . >cloudformation/stable/multi-master.json
 	curl -f -s $(TEMPLATES_ROOT_EARLY)/single-master.cloudformation.json | jq . >cloudformation/earlyaccess/multi-master.json
 	curl -f -s $(TEMPLATES_ROOT_EARLY)/multi-master.cloudformation.json | jq . >cloudformation/earlyaccess/multi-master.json
-	aws s3 sync ./cloudformation/ s3://nrgi-cloudformation/dcos
+	aws s3 sync ./cloudformation/ s3://nrgi-dcos/dcos-templates
 
 .PHONY: venv

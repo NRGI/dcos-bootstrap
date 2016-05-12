@@ -14,7 +14,7 @@
         stack_name: "{{ dcos_cluster_name }}"
         state: present
         region: "{{ aws_region }}"
-        template_url: "https://s3.amazonaws.com/nrgi-cloudformation/dcos/{{ dcos_channel }}/{{ dcos_master_setup }}.json"
+        template_url: "https://s3.amazonaws.com/nrgi-dcos/dcos-templates/{{ dcos_channel }}/{{ dcos_master_setup }}.json"
         template_parameters:
           AdminLocation: "{{ dcos_admin_location }}"
           KeyName: dcos-admin
@@ -24,9 +24,9 @@
 
     - set_fact:
         dcos_url: "http://{{ dcos_stack.stack_outputs.DnsAddress }}"
-
-    - set_fact:
         dcos_public_slave: "http://{{ dcos_stack.stack_outputs.PublicSlaveDnsAddress }}"
+        dcos_url_update: "dualstack.{{ dcos_stack.stack_outputs.DnsAddress }}"
+        dcos_public_update: "dualstack.{{ dcos_stack.stack_outputs.PublicSlaveDnsAddress }}"
 
     - name: Create tmp folder for DCOS CLI
       file: path=tmp/.dcos state=directory mode=0755
@@ -44,6 +44,40 @@
     - name: Validate DCOS CLI configuration
       command: ./dcos config validate
       changed_when: False
+
+    - name: Update elastic beanstalk
+      command: echo {{ dcos_url_update }}
+      # command: aws route53 change-resource-record-sets --hosted-zone-id Z35SXDOTRQ7X7K --change-batch file:''
+# Alias Syntax:
+
+#           {
+#             "Comment": "optional comment about the changes in this change batch request",
+#             "Changes": [
+#               {
+#                 "Action": "CREATE"|"DELETE"|"UPSERT",
+#                 "ResourceRecordSet": {
+#                   "Name": "DNS domain name",
+#                   "Type": "A",
+#                   "AliasTarget": {
+#                     "HostedZoneId": "hosted zone ID for your CloudFront distribution, Amazon S3 bucket, Elastic Load Balancing load balancer, or Amazon Route 53 hosted zone",
+#                     "DNSName": "DNS domain name for your CloudFront distribution, Amazon S3 bucket, Elastic Load Balancing load balancer, or another resource record set in this hosted zone",
+#                     "EvaluateTargetHealth": true|false
+#                   },
+#                   "HealthCheckId": "optional ID of an Amazon Route 53 health check"
+#                 }
+#               },
+#               {...}
+#             ]
+#           }
+      # dualstack.nrgi-dcos-ElasticL-SMGG7VAS360N-1660210306.us-east-1.elb.amazonaws.com
+
+      # curl --header "Authorization:curl --header token=$(dcos config show core.dcos_acs_token)" -L -H 'Content-Type: application/json' -X POST -d@nos.json "http://mesosclus-elasticl-abcdf1304kl-1913011502.us-east-1.elb.amazonaws.com/#/services/ui/chronos/scheduler/iso8601"`
+      # curl -sSL -H "Authorization: token=$(dcos config show core.dcos_acs_token)" $(dcos config show core.dcos_url)/mesos/slaves | python -m json.tool`
+      # dcos package install chronos
+      # curl --header "Authorization:curl --header token=$(dcos config show core.dcos_acs_token)"  -L -H 'Content-Type: application/json' -X POST -d@nos.json "http://m1.dcos/service/chronos/scheduler/iso8601
+      # "http://<MASTER_HERE>/service/chronos/scheduler/iso8601"`
+
+
 
     # SET DNS
     # http://docs.ansible.com/ansible/route53_module.html
