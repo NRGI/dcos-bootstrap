@@ -1,0 +1,29 @@
+{
+  "Comment": "Update dcos endpoints",
+  "Changes": [
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "resourceprojects.org.",
+        "Type": "A",
+        "AliasTarget": {
+          "HostedZoneId": "Z35SXDOTRQ7X7K",
+          "EvaluateTargetHealth": false,
+          "DNSName": "{{ dcos_url_update }}."
+        }
+      }
+    },
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "\\052.resourceprojects.org.",
+        "Type": "A",
+        "AliasTarget": {
+          "HostedZoneId": "Z35SXDOTRQ7X7K",
+          "EvaluateTargetHealth": false,
+          "DNSName": "{{ dcos_public_update }}."
+        }
+      }
+    }
+  ]
+}

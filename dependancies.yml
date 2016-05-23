@@ -15,29 +15,9 @@
       command: ./dcos package install --yes chronos
       when: "'/chronos' not in package_list.stdout"
 
-    # - name: Install jenkins
-    #   command: ./dcos package install --yes jenkins
-    #   when: "'/jenkins' not in package_list.stdout"
-
     - name: Install marathon-lb-external
       command: ./dcos package install --yes --options=./conf/marathon-lb-opt.json marathon-lb
       when: "'/marathon-lb-external' not in package_list.stdout"
-
-    # - name: Install marathon-lb-internal
-    #   command: ./dcos package install --options=./conf/marathon-lb-opt.json --yes marathon-lb
-    #   when: "'/marathon-lb-internal' not in package_list.stdout"
-
-    # - name: Install nginx-external
-    #   command: ./dcos marathon app add ./conf/nginx-external.json
-    #   when: "'/nginx-external' not in app_list.stdout"
-
-    # - name: Install nginx-internal
-    #   command: ./dcos marathon app add ./conf/nginx-internal.json
-    #   when: "'/nginx-internal' not in app_list.stdout"
-
-    # - name: Install nginx-everywhere
-    #   command: ./dcos marathon app add ./conf/nginx-everywhere.json
-    #   when: "'/nginx-everywhere' not in app_list.stdout"
 
     - name: Install RGI staging
       command: ./dcos marathon app add ./conf/rgi-staging.json
@@ -47,40 +27,10 @@
       command: ./dcos marathon app add ./conf/rgi-production.json
       when: "'/rgi-production' not in app_list.stdout"
 
-    - name: Install RP
-      command: ./dcos marathon app add ./conf/rp-org.json
-      when: "'/resource-projects-org' not in app_list.stdout"
+    - name: Install RP staging
+      command: ./dcos marathon app add ./conf/rp-staging.json
+      when: "'/rp-staging' not in app_list.stdout"
 
-
-
-    # KUBERNETES
-    # - name: Install etcd-mesos cluster
-    #   command: ./dcos package install --yes etcd
-    #   when: "'/etcd' not in package_list.stdout"
-
-    # - name: Wait until etcd is healthy
-    #   command: ./dcos marathon app show /etcd
-    #   register: etcd_status
-    #   until: (etcd_status.stdout|from_json)["tasksHealthy"] > 0
-    #   retries: 6
-    #   delay: 15
-
-    # - name: Write Kubernetes configuration
-    #   copy:
-    #     content: >
-    #       {"kubernetes": {"etcd-mesos-framework-name": "etcd"}}
-    #     dest: tmp/kubernetes-options.json
-
-    # - name: Install Kubernetes on DCOS
-    #   command: ./dcos package install --yes --options=tmp/kubernetes-options.json kubernetes
-    #   when: "'/kubernetes' not in package_list.stdout"
-
-    # - name: Wait until Kubernetes is healthy
-    #   command: ./dcos marathon app show /kubernetes
-    #   register: kubernetes_status
-    #   until: (kubernetes_status.stdout|from_json)["tasksHealthy"] > 0
-    #   retries: 6
-    #   delay: 15
-
-    # - name: Verify that kubectl works
-    #   command: ./dcos kubectl get pods --namespace=kube-system
+    - name: Install RP production
+      command: ./dcos marathon app add ./conf/rp-production.json
+      when: "'/rp-production' not in app_list.stdout"

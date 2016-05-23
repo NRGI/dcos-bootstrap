@@ -1,0 +1,17 @@
+{
+  "Comment": "Update dcos endpoints",
+  "Changes": [
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "\\052.nrgi-assessment.org.",
+        "Type": "A",
+        "AliasTarget": {
+          "HostedZoneId": "Z35SXDOTRQ7X7K",
+          "EvaluateTargetHealth": false,
+          "DNSName": "{{ dcos_public_update }}."
+        }
+      }
+    }
+  ]
+}

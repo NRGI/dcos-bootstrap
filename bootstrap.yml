@@ -41,15 +41,31 @@
         src: templates/urls.conf.tmpl
         dest: tmp/urls.conf
 
-    - name: Generate DNS configuration
+    - name: Generate base DNS configuration
       template:
-        src: templates/dns_change.json.tmpl
-        dest: tmp/dns_change.json
+        src: templates/base_dns_change.json.tmpl
+        dest: tmp/base_dns_change.json
+    
+    - name: Generate RP DNS configuration
+      template:
+        src: templates/rp_dns_change.json.tmpl
+        dest: tmp/rp_dns_change.json
+    
+    - name: Generate RGI DNS configuration
+      template:
+        src: templates/rgi_dns_change.json.tmpl
+        dest: tmp/rgi_dns_change.json
 
     - name: Validate DCOS CLI configuration
       command: ./dcos config validate
       changed_when: False
 
-    - name: Update elastic beanstalk
-      command: aws route53 change-resource-record-sets --hosted-zone-id Z2PYZBK36FDXXD --change-batch file://./tmp/dns_change.json
+    - name: Update base route53
+      command: aws route53 change-resource-record-sets --hosted-zone-id Z2PYZBK36FDXXD --change-batch file://./tmp/base_dns_change.json
+
+    - name: Update rp route53
+      command: aws route53 change-resource-record-sets --hosted-zone-id Z18MUH24G8KMPQ --change-batch file://./tmp/rp_dns_change.json
+
+    - name: Update rgi route53
+      command: aws route53 change-resource-record-sets --hosted-zone-id Z344LULZ45H9MC --change-batch file://./tmp/rgi_dns_change.json
 
