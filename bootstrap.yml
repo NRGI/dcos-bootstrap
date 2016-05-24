@@ -2,13 +2,6 @@
   connection: local
   gather_facts: False
   tasks:
-    # - name: Create EC2 key pair
-    #   ec2_key:
-    #     state: present
-    #     region: "{{ aws_region }}"
-    #     key_material: "{{ item }}"
-    #   with_file: dcos_admin_key
-
     - name: Create Mesosphere DCOS cluster
       cloudformation:
         stack_name: "{{ dcos_cluster_name }}"

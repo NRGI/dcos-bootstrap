@@ -31,15 +31,9 @@ destroy: venv
 
 dependancies: venv
 	venv/bin/ansible-playbook -v dependancies.yml
-	# kubernetes-env
 
 test: venv
 	venv/bin/ansible-playbook --syntax-check *.yml
-
-# kubernetes: bootstrap kubernetes-install kubernetes-env
-
-# kubernetes-env:
-# 	@echo KUBERNETES_MASTER=$$(./dcos config show core.dcos_url)/service/kubernetes/api
 
 dashboard:
 	@open $$(./dcos config show core.dcos_url)
