@@ -63,9 +63,9 @@
     - name: Update base route53
       command: aws route53 change-resource-record-sets --hosted-zone-id Z2PYZBK36FDXXD --change-batch file://./tmp/base_dns_change.json
 
-    - name: Update rp route53
-      command: aws route53 change-resource-record-sets --hosted-zone-id Z18MUH24G8KMPQ --change-batch file://./tmp/rp_dns_change.json
+    # - name: Update rp route53
+    #   command: aws route53 change-resource-record-sets --hosted-zone-id Z18MUH24G8KMPQ --change-batch file://./tmp/rp_dns_change.json
 
-    - name: Update rgi route53
-      command: aws route53 change-resource-record-sets --hosted-zone-id Z344LULZ45H9MC --change-batch file://./tmp/rgi_dns_change.json
+    # - name: Update rgi route53
+    #   command: aws route53 change-resource-record-sets --hosted-zone-id Z344LULZ45H9MC --change-batch file://./tmp/rgi_dns_change.json
 

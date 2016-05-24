@@ -3,10 +3,10 @@ AWS_REGION ?= us-east-1
 DCOS_CLUSTER_NAME        ?= nrgi-dcos
 DCOS_ADMIN_KEY           ?= ~/.ssh/dcos-admin.pem
 DCOS_ADMIN_LOCATION      ?= 0.0.0.0/0
-DCOS_WORKER_NODES        ?= 2
+DCOS_WORKER_NODES        ?= 3
 DCOS_PUBLIC_WORKER_NODES ?= 1
 DCOS_CHANNEL             ?= nrgi
-DCOS_MASTER_SETUP        ?= single-master
+DCOS_MASTER_SETUP        ?= multi-master
 DCOS_ROUTE53_ZONE        ?= Z2PYZBK36FDXXD
 
 bootstrap: venv
@@ -32,6 +32,9 @@ destroy: venv
 dependancies: venv
 	venv/bin/ansible-playbook -v dependancies.yml
 	# kubernetes-env
+
+test: venv
+	venv/bin/ansible-playbook --syntax-check *.yml
 
 # kubernetes: bootstrap kubernetes-install kubernetes-env
 
