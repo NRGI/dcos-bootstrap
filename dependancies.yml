@@ -19,17 +19,17 @@
       command: ./dcos package install --yes --options=./conf/marathon-lb-opt.json marathon-lb
       when: "'/marathon-lb-external' not in package_list.stdout"
 
-    # - name: Install RGI staging
-    #   command: ./dcos marathon app add ./conf/rgi-staging.json
-    #   when: "'/rgi-staging' not in app_list.stdout"
+    - name: Install RGI staging
+      command: ./dcos marathon app add ./conf/rgi-staging.json
+      when: "'/rgi-staging' not in app_list.stdout"
 
     - name: Install RGI production
       command: ./dcos marathon app add ./conf/rgi-production.json
       when: "'/rgi-production' not in app_list.stdout"
 
-    # - name: Install RP staging
-    #   command: ./dcos marathon app add ./conf/rp-staging.json
-    #   when: "'/rp-staging' not in app_list.stdout"
+    - name: Install RP staging
+      command: ./dcos marathon app add ./conf/rp-staging.json
+      when: "'/rp-staging' not in app_list.stdout"
 
     - name: Install RP production
       command: ./dcos marathon app add ./conf/rp-production.json
