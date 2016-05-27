@@ -1,0 +1,20 @@
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  tasks:
+    - name: Get list of installed DCOS packages
+      command: ./dcos package list
+      register: package_list
+      ignore_errors: True
+
+    - name: Install chronos
+      command: ./dcos package install --yes --options=./conf/chronos-opt.json chronos
+      when: "'/chronos' not in package_list.stdout"
+
+    # - name: Install chronos
+    #   command: ./dcos package install --yes chronos
+    #   when: "'/chronos' not in package_list.stdout"
+
+    - name: Install marathon-lb-external
+      command: ./dcos package install --yes --options=./conf/marathon-lb-opt.json marathon-lb
+      when: "'/marathon-lb-external' not in package_list.stdout"

@@ -29,8 +29,11 @@ destroy: venv
 		-e dcos_master_setup="$(DCOS_MASTER_SETUP)"
 	$(RM) -r tmp venv
 
-dependancies: venv
-	venv/bin/ansible-playbook -v dependancies.yml
+packages: venv
+	venv/bin/ansible-playbook -v packages.yml
+
+apps: venv
+	venv/bin/ansible-playbook -v apps.yml
 
 test: venv
 	venv/bin/ansible-playbook --syntax-check *.yml
