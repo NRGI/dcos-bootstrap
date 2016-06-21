@@ -1,0 +1,16 @@
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  tasks:
+    - name: Get list of installed Marathon aps
+      command: ./dcos marathon app list
+      register: app_list
+      ignore_errors: True
+
+    - name: Install RGI staging
+      command: ./dcos marathon app add ./conf/marathon_conf/rgi-staging.json
+      when: "'/rgi-staging' not in app_list.stdout"
+
+    - name: Install RP staging
+      command: ./dcos marathon app add ./conf/marathon_conf/rp-staging.json
+      when: "'/rp-staging' not in app_list.stdout"

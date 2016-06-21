@@ -8,6 +8,8 @@ DCOS_PUBLIC_WORKER_NODES ?= 1
 DCOS_CHANNEL             ?= nrgi
 DCOS_MASTER_SETUP        ?= multi-master
 DCOS_ROUTE53_ZONE        ?= Z2PYZBK36FDXXD
+DOCKER_DRYDOCK_NAME		 ?= DOCKER-DRYDOCK
+DOCKER_DRYDOCK_PUB_IP	 ?= 52.23.117.223
 
 bootstrap: venv
 	venv/bin/ansible-playbook -v bootstrap.yml \
@@ -21,7 +23,7 @@ bootstrap: venv
 		-e dcos_master_setup="$(DCOS_MASTER_SETUP)" \
 		-e dcos_zone="$(DCOS_ROUTE53_ZONE)"
 
-destroy: venv
+destroy: venv drydock
 	venv/bin/ansible-playbook -v destroy.yml \
 		-e dcos_cluster_name="$(DCOS_CLUSTER_NAME)" \
 		-e aws_region="$(AWS_REGION)" \
@@ -29,11 +31,19 @@ destroy: venv
 		-e dcos_master_setup="$(DCOS_MASTER_SETUP)"
 	$(RM) -r tmp venv
 
+drydock: venv
+	venv/bin/ansible-playbook -v drydock.yml \
+		-e docker_drydock_name="$(DOCKER_DRYDOCK_NAME)" \
+		-e docker_drydock_pub_ip="$(DOCKER_DRYDOCK_PUB_IP)"
+
 packages: venv
 	venv/bin/ansible-playbook -v packages.yml
 
-apps: venv
-	venv/bin/ansible-playbook -v apps.yml
+production: venv
+	venv/bin/ansible-playbook -v production.yml
+
+staging: venv
+	venv/bin/ansible-playbook -v staging.yml
 
 test: venv
 	venv/bin/ansible-playbook --syntax-check *.yml

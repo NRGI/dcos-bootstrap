@@ -8,13 +8,9 @@
       ignore_errors: True
 
     - name: Install chronos
-      command: ./dcos package install --yes --options=./conf/chronos-opt.json chronos
+      command: ./dcos package install --yes --options=./conf/marathon_conf/chronos-opt.json chronos
       when: "'/chronos' not in package_list.stdout"
 
-    # - name: Install chronos
-    #   command: ./dcos package install --yes chronos
-    #   when: "'/chronos' not in package_list.stdout"
-
     - name: Install marathon-lb-external
-      command: ./dcos package install --yes --options=./conf/marathon-lb-opt.json marathon-lb
+      command: ./dcos package install --yes --options=./conf/marathon_conf/marathon-lb-opt.json marathon-lb
       when: "'/marathon-lb-external' not in package_list.stdout"

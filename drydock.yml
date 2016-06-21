@@ -1,0 +1,22 @@
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  tasks:
+    - name: Get docker machine list
+      command: docker-machine ls
+      register: docker_machine_list
+      ignore_errors: True
+
+    - name: Create drydock instance
+      command: bash ./conf/drydock_scripts/drydock_make.sh {{ docker_drydock_name }} {{ docker_drydock_pub_ip }}
+      when: "'{{ docker_drydock_name }}' not in docker_machine_list.stdout"
+
+    - name: Start drydock instance
+      command: docker-machine start {{ docker_drydock_name }}
+      when: "'{{ docker_drydock_name }}              amazonec2    Running' not in docker_machine_list.stdout"
+
+    - name: Activate drydock docker client, pull most recent images, kill and remove old containers, build new ones and reload nginx configs
+      command: bash ./conf/drydock_scripts/drydock_build.sh {{ docker_drydock_name }}
+
+    # - name: Update docker container dns via route53
+    #   command: aws route53 change-resource-record-sets --hosted-zone-id Z2PYZBK36FDXXD --change-batch file://./tmp/base_dns_change.json

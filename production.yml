@@ -1,0 +1,22 @@
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  tasks:
+    - name: Get list of installed Marathon aps
+      command: ./dcos marathon app list
+      register: app_list
+      ignore_errors: True
+
+    - name: Install RGI production
+      command: ./dcos marathon app add ./conf/marathon_conf/rgi-production.json
+      when: "'/rgi-production' not in app_list.stdout"
+
+    - name: Install RP production
+      command: ./dcos marathon app add ./conf/marathon_conf/rp-production.json
+      when: "'/rp-production' not in app_list.stdout"
+
+    - name: Update rp route53
+      command: aws route53 change-resource-record-sets --hosted-zone-id Z18MUH24G8KMPQ --change-batch file://./tmp/rp_dns_change.json
+
+    - name: Update rgi route53
+      command: aws route53 change-resource-record-sets --hosted-zone-id Z344LULZ45H9MC --change-batch file://./tmp/rgi_dns_change.json
